@@ -1,0 +1,6 @@
+framework module TIOSDK {
+  umbrella header "TIOSDK.h"
+
+  export *
+  module * { export * }
+}

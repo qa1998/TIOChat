@@ -139,3 +139,213 @@ typedef void (^TIOConversationOperHandler)(NSError * __nullable error, id data);
 - (void)repostMessages:(NSArray *)messageIds toUsers:(NSArray * _Nullable)uIds teams:(NSArray * _Nullable)teamIds inSession:(TIOSession *)session completionHandler:(nonnull void (^)(NSError * _Nullable error))completionHandler;
 - (void)tipoffMessage:(TIOMessage *)message inSession:(TIOSession *)session completionHandler:(nonnull void (^)(NSError * _Nullable error))completionHandler 
 ```
+## TIOTeamManager
+## completion
+```sh
+- (void)didDeleteTeam:(TIOTeam  * _Nullable )team;
+- (void)didTransferedTeam:(TIOTeam  * _Nullable )team;
+- (void)didExitFromTeam:(TIOTeam  * _Nullable )team;
+- (void)didUpdateTeamInfo:(TIOTeam * _Nullable )team;
+- (void)didKickedOut:(TIOSystemNotification *)notification;
+- (void)didRejoin:(TIOSystemNotification *)notification;
+- (void)didUpdateMemebersCount:(NSInteger)count;
+```
+
+```sh
+- (void)createTeamName:(NSString * _Nullable)name
+          introduction:(NSString *)intro
+                 users:(NSArray<NSString *> *)userIds
+            completion:(TIOCreateTeamHandler)completion;
+- (void)addUser:(NSArray<NSString *> *)userIds toTeam:(NSString *)teamId sharerUid:(NSString * _Nullable)sharerUid completion:(TIOTeamError)completion;
+- (void)applyToAddUsers:(NSArray *)userIds toTeam:(NSString *)teamId msg:(NSString *)msg completion:(TIOTeamError)completion;
+- (void)removeUser:(NSArray<NSString *> *)userIds
+          fromTeam:(NSString *)teamId
+        completion:(TIOTeamError)completion;
+- (void)fetchTeamInfoWithTeamId:(NSString *)groupId
+                     completion:(TIOTeamInfoHandler)completion;
+- (void)fetchUserInfoInTeam:(NSString *)teamId
+                 completion:(TIOTeamUserHandler)completion;
+- (void)searchMember:(NSString * _Nullable)key
+              inTeam:(NSString *)teamId
+          completion:(TIOUsersNotInTeamHandler)completion;
+- (void)searchFriends:(NSString *)searchKey
+            notInTeam:(NSString *)teamId
+           completion:(TIOUsersNotInTeamHandler)completion;
+- (void)fetchMembersInTeam:(NSString *)teamId
+                 searchKey:(NSString * _Nullable)key
+                pageNumber:(NSInteger)pageNumber
+                completion:(TIOTeamUsersHandler)completion;
+- (void)searchMyTeamsWithKey:(NSString *)key
+                  completion:(TIOTeamsHandler)completion;
+- (void)checkTeam:(NSString *)teamId canSendCardWithCompletion:(TIOTeamError)completion;
+- (void)checkTeamShareCard:(NSString *)teamId fromUser:(NSString *)fromUserId completion:(TIOCheckCardJoinToTeamError)completion;
+- (void)shareTeam:(NSString *)teamId toUids:(NSArray<NSString *> * _Nullable )uids toTeamIds:(NSArray<NSString *> * _Nullable )teamIds completion:(TIOTeamError)completion;
+- (void)checkMember:(NSString *)memberId isInTeam:(NSString *)teamId completion:(TIOCheckMemberHandler)completion;
+- (void)updateUserNick:(NSString *)newNick
+                inTeam:(NSString *)teamId
+            completion:(TIOTeamError)completion;
+- (void)updateTeamName:(NSString *)newNick
+                inTeam:(NSString *)teamId
+            completion:(TIOTeamError)completion;
+- (void)updateTeamNotice:(NSString *)newNotice
+                  inTeam:(NSString *)teamId
+              completion:(TIOTeamError)completion;
+- (void)updateTeamIntro:(NSString *)newIntro
+                 inTeam:(NSString *)teamId
+             completion:(TIOTeamError)completion;
+- (void)exitFromTeam:(NSString *)teamId
+          completion:(TIOTeamError)completion;
+- (void)deleteTeam:(NSString *)teamId
+        completion:(TIOTeamError)completion;
+- (void)transferTeam:(NSString *)teamId
+              toUser:(NSString *)uid
+          completion:(TIOTeamError)completion;
+- (void)updateJoiningPermissionForTeam:(NSString *)teamId isAllowJoin:(BOOL)allow completion:(TIOTeamError)completion;
+- (void)updateReviewingPermissionForTeam:(NSString *)teamId isReview:(BOOL)isReview completion:(TIOTeamError)completion;
+- (void)fetchAllTeams:(TIOTeamsHandler)completion;
+- (void)changeMemberRole:(TIOTeamUserRole)role uid:(NSString *)uid inTeam:(NSString *)teamid completion:(TIOTeamError)completion;
+- (void)fetchApplyInfoForInviting:(NSString *)applyId completion:(void(^)(TIOInvitationApply  * _Nullable applyInfor, NSArray <TIOUser *>  * _Nullable users, NSError * __nullable error))completion;
+- (void)dealApplyForInviting:(NSString *)applyId messageId:(NSString *)mid completion:(TIOTeamError)completion;
+- (void)updateAddingFriendPermissionInTeam:(NSString *)teamId flag:(NSInteger)flag completion:(TIOTeamError)completion;
+- (void)forbiddenSpeakInTeam:(NSString *)teamid oper:(NSInteger)oper mode:(NSInteger)mode duration:(NSInteger)duration uid:(NSString *_Nullable)uid completion:(TIOTeamError)completion;
+- (void)fetchForbiddenUserListInTeamId:(NSString *)teamid
+                             searchKey:(NSString * _Nullable)key
+                            pageNumber:(NSInteger)pageNumber
+                            completion:(TIOTeamUsersHandler)completion;
+- (void)checkStatusForUser:(NSString *)uid inTeam:(NSString *)teamid completion:(void(^)(NSError * _Nullable error, NSDictionary * _Nullable result))completion;
+```
+## TIOTRoomManager
+## completion
+```sh
+typedef void(^TIORoomsHandler)(NSArray<TIORoom *> * __nullable room,NSError * __nullable error);
+typedef void(^TIORoomInfoHandler)(TIORoom * __nullable room, TIORoomMember * __nullable roomUser ,NSError * __nullable error);
+typedef void(^TIORoomUserHandler)(TIORoomMember * __nullable roomUser,NSError * __nullable error);
+typedef void(^TIORoomUsersHandler)(NSArray<TIORoomMember *> * __nullable roomUsers,BOOL first,BOOL last, NSInteger total, NSError * __nullable error);
+typedef void(^TIOUsersNotInRoomHandler)(NSArray<TIOUser *> * __nullable users,NSError * __nullable error);
+typedef void(^TIORoomError)(NSError * __nullable error);
+typedef void(^TIOCreateRoomHandler)(NSError * __nullable error, NSString * __nullable roomId);
+typedef void(^TIOCheckCardJoinToRoomError)(NSError * __nullable error, TIORoomCardStatus status);
+typedef void(^TIOCheckMemberHandler)(NSError * __nullable error, BOOL isInRoom);
+```
+```sh
+- (void)createRoomName:(NSString * _Nullable)name
+          introduction:(NSString *)intro
+                 users:(NSArray<NSString *> *)userIds
+            completion:(TIOCreateRoomHandler)completion;
+            
+- (void)addUser:(NSArray<NSString *> *)userIds
+         toRoom:(NSString *)roomId
+      sharerUid:(NSString * _Nullable)sharerUid
+     completion:(TIORoomError)completion;
+     
+- (void)applyToAddUsers:(NSArray *)userIds
+                 toRoom:(NSString *)roomId
+                    msg:(NSString *)msg
+             completion:(TIORoomError)completion;
+             
+- (void)removeUser:(NSArray<NSString *> *)userIds
+          fromRoom:(NSString *)roomId
+        completion:(TIORoomError)completion;
+        
+- (void)fetchRoomInfoWithRoomId:(NSString *)roomId
+                     completion:(TIORoomInfoHandler)completion;
+                     
+- (void)fetchUserInfoInRoom:(NSString *)roomId
+                 completion:(TIORoomUserHandler)completion;
+                 
+- (void)searchMember:(NSString * _Nullable)key
+              inRoom:(NSString *)roomId
+          completion:(TIOUsersNotInRoomHandler)completion;
+          
+- (void)searchFriends:(NSString *)searchKey
+            notInRoom:(NSString *)roomId
+           completion:(TIOUsersNotInRoomHandler)completion;
+           
+- (void)fetchMembersInRoom:(NSString *)roomId
+                 searchKey:(NSString * _Nullable)key
+                pageNumber:(NSInteger)pageNumber
+                completion:(TIORoomUsersHandler)completion;
+                
+- (void)searchMyRoomsWithKey:(NSString *)key
+                  completion:(TIORoomsHandler)completion;
+                  
+- (void)checkRoom:(NSString *)roomId canSendCardWithCompletion:(TIORoomError)completion;
+
+- (void)checkRoomShareCard:(NSString *)roomId fromUser:(NSString *)fromUserId completion:(TIOCheckCardJoinToRoomError)completion;
+
+- (void)shareRoom:(NSString *)roomId
+           toUids:(NSArray<NSString *> * _Nullable )uids
+        toRoomIds:(NSArray<NSString *> * _Nullable )roomIds completion:(TIORoomError)completion;
+        
+- (void)checkMember:(NSString *)memberId
+           isInRoom:(NSString *)roomId
+         completion:(TIOCheckMemberHandler)completion;
+         
+- (void)updateUserNick:(NSString *)newNick
+                inRoom:(NSString *)roomId
+            completion:(TIORoomError)completion;
+            
+- (void)updateRoomName:(NSString *)newNick
+                inRoom:(NSString *)roomId
+            completion:(TIORoomError)completion;
+            
+- (void)updateRoomNotice:(NSString *)newNotice
+                  inRoom:(NSString *)roomId
+              completion:(TIORoomError)completion;
+              
+- (void)updateRoomIntro:(NSString *)newIntro
+                 inRoom:(NSString *)roomId
+             completion:(TIORoomError)completion;
+             
+- (void)exitFromRoom:(NSString *)roomId
+          completion:(TIORoomError)completion;
+          
+- (void)deleteRoom:(NSString *)roomId
+        completion:(TIORoomError)completion;
+        
+- (void)transferRoom:(NSString *)roomId
+              toUser:(NSString *)uid
+          completion:(TIORoomError)completion;
+          
+- (void)updateJoiningPermissionForRoom:(NSString *)roomId
+                           isAllowJoin:(BOOL)allow
+                            completion:(TIORoomError)completion;
+                            
+- (void)updateReviewingPermissionForRoom:(NSString *)roomId
+                                isReview:(BOOL)isReview
+                              completion:(TIORoomError)completion;
+                              
+- (void)fetchAllRooms:(TIORoomsHandler)completion;
+
+- (void)changeMemberRole:(TIORoomUserRole)role
+                     uid:(NSString *)uid
+                  inRoom:(NSString *)roomid
+              completion:(TIORoomError)completion;
+              
+- (void)fetchApplyInfoForInviting:(NSString *)applyId
+                       completion:(void(^)(TIOInvitationApply  * _Nullable applyInfor, NSArray <TIOUser *>  * _Nullable users, NSError * __nullable error))completion;
+                       
+- (void)dealApplyForInviting:(NSString *)applyId
+                   messageId:(NSString *)mid
+                  completion:(TIORoomError)completion;
+                  
+- (void)updateAddingFriendPermissionInRoom:(NSString *)roomId
+                                      flag:(NSInteger)flag
+                                completion:(TIORoomError)completion;
+                                
+- (void)forbiddenSpeakInRoom:(NSString *)roomid
+                        oper:(NSInteger)oper
+                        mode:(NSInteger)mode
+                    duration:(NSInteger)duration
+                         uid:(NSString *_Nullable)uid
+                  completion:(TIORoomError)completion;
+                  
+- (void)fetchForbiddenUserListInRoomId:(NSString *)roomid
+                             searchKey:(NSString * _Nullable)key
+                            pageNumber:(NSInteger)pageNumber
+                            completion:(TIORoomUsersHandler)completion;
+                            
+- (void)checkStatusForUser:(NSString *)uid
+                    inRoom:(NSString *)roomid
+                completion:(void(^)(NSError * _Nullable error, NSDictionary * _Nullable result))completion;
+```

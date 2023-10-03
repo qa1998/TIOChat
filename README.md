@@ -268,11 +268,6 @@ typedef void(^TIOCheckMemberHandler)(NSError * __nullable error, BOOL isInRoom);
          toRoom:(NSString *)roomId
       sharerUid:(NSString * _Nullable)sharerUid
      completion:(TIORoomError)completion;
-     
-- (void)applyToAddUsers:(NSArray *)userIds
-                 toRoom:(NSString *)roomId
-                    msg:(NSString *)msg
-             completion:(TIORoomError)completion;
              
 - (void)removeUser:(NSArray<NSString *> *)userIds
           fromRoom:(NSString *)roomId
@@ -296,21 +291,6 @@ typedef void(^TIOCheckMemberHandler)(NSError * __nullable error, BOOL isInRoom);
                  searchKey:(NSString * _Nullable)key
                 pageNumber:(NSInteger)pageNumber
                 completion:(TIORoomUsersHandler)completion;
-                
-- (void)searchMyRoomsWithKey:(NSString *)key
-                  completion:(TIORoomsHandler)completion;
-                  
-- (void)checkRoom:(NSString *)roomId canSendCardWithCompletion:(TIORoomError)completion;
-
-- (void)checkRoomShareCard:(NSString *)roomId fromUser:(NSString *)fromUserId completion:(TIOCheckCardJoinToRoomError)completion;
-
-- (void)shareRoom:(NSString *)roomId
-           toUids:(NSArray<NSString *> * _Nullable )uids
-        toRoomIds:(NSArray<NSString *> * _Nullable )roomIds completion:(TIORoomError)completion;
-        
-- (void)checkMember:(NSString *)memberId
-           isInRoom:(NSString *)roomId
-         completion:(TIOCheckMemberHandler)completion;
          
 - (void)updateUserNick:(NSString *)newNick
                 inRoom:(NSString *)roomId
@@ -348,17 +328,6 @@ typedef void(^TIOCheckMemberHandler)(NSError * __nullable error, BOOL isInRoom);
                               
 - (void)fetchAllRooms:(TIORoomsHandler)completion;
 
-- (void)changeMemberRole:(TIORoomUserRole)role
-                     uid:(NSString *)uid
-                  inRoom:(NSString *)roomid
-              completion:(TIORoomError)completion;
-              
-- (void)fetchApplyInfoForInviting:(NSString *)applyId
-                       completion:(void(^)(TIOInvitationApply  * _Nullable applyInfor, NSArray <TIOUser *>  * _Nullable users, NSError * __nullable error))completion;
-                       
-- (void)dealApplyForInviting:(NSString *)applyId
-                   messageId:(NSString *)mid
-                  completion:(TIORoomError)completion;
                   
 - (void)updateAddingFriendPermissionInRoom:(NSString *)roomId
                                       flag:(NSInteger)flag

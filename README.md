@@ -16,6 +16,37 @@ option.isOpenSSL = true
 
 TIOChat.shareSDK().register(with: option)
 ```
+## isLogined
+```sh
+TIOChat.shareSDK().loginManager.isLogined
+```
+
+## Login
+```sh
+## login usser name, password
+## let account = "" 
+## let password = ""
+TIOChat.shareSDK().loginManager.login(account, password: password, authcode: nil) { user, err in }
+## login fqa
+## let fqaToken = ""
+TIOChat.shareSDK().loginManager.loginFQA(fqaToken) { user, err in }
+```
+## After login success
+```sh
+# call function
+TIOChat.shareSDK().lunch()
+
+# example in AppDelegate
+ if TIOChat.shareSDK().loginManager.isLogined { 
+     TIOChat.shareSDK().lunch()
+ }
+ # example in API
+ TIOChat.shareSDK().loginManager.loginFQA(fqaToken) { user, err in 
+     if err == nil {
+         TIOChat.shareSDK().lunch()
+     }
+ }
+```
 ## TIOchat Delegation
 **- TIOLoginDelegate**
 ```sh

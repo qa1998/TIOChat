@@ -97,8 +97,6 @@ TIOChat.shareSDK().lunch()
 ```
 **- TIOChatDelegate**
 ```sh
-- (void)didSendMessage:(TIOMessage *)message completion:(NSError * _Nullable)error;
-- (void)didUploadFile:(TIOMessage *)message completion:(NSError * _Nullable)error;
 - (void)onRecvMessages:(NSArray<TIOMessage *> *)messages;
 - (void)didDeleteMessage:(TIOMessage *)message;
 - (void)didRevokeMessage:(TIOMessage *)message;

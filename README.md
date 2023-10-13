@@ -1,8 +1,6 @@
 # TIOCHAT
-# Example
-## ConfigTIOChat
-## In Appdelegate
-
+## Example 
+## Config in appdelegate
 ```sh
 let tioConfig = TIOConfig()
 tioConfig.httpsAddress = "https://tio-chat.dev.ftech.ai"
@@ -31,6 +29,10 @@ TIOChat.shareSDK().loginManager.login(account, password: password, authcode: nil
 ## let fqaToken = ""
 TIOChat.shareSDK().loginManager.loginFQA(fqaToken) { user, err in }
 ```
+## Logout
+```sh
+TIOChat.shareSDK().loginManager.logout {err in }
+```
 ## After login success
 ```sh
 # call function
@@ -47,6 +49,107 @@ TIOChat.shareSDK().lunch()
      }
  }
 ```
+## List Conversation 
+```sh
+## Get List
+TIOChat.shareSDK().conversationManager.fetchServerSessions { listConversation, error in }
+
+## Add delegate
+TIOChat.shareSDK().conversationManager.add(self)
+
+## Remove Delegate
+TIOChat.shareSDK().conversationManager.remove(self)
+
+## Delegate Callback
++ ConversationManager
+    # start a new chat
+  - func didAdd(_ recentSession: TIORecentSession) {} 
+    # update chat in session
+  - func didUpdate(_ recentSession: TIORecentSession) {} 
+    # Delete session. Note the trigger conditions:
+    #1. When the machine executes deleteSession to delete the session
+    #2. When the remote device executes deleteSession to delete the session
+  - func didDeleteSession(_ session: String) {} 
+    # The unread messages of a session have changed
+  - func didChangeUnreadCount(_ total: Int, in session: TIORecentSession) {} 
+    # The total number of unread messages across all conversations changed
+  - func didChangeTotalUnreadCount(_ total: Int) {} 
+    # All chat history in a conversation has been cleared
+  - func didClearAllMessages(in session: TIOSession) {} 
+```
+## Public Chat
+```sh
+## Get List Public Chat Is Active
+TIOChat.shareSDK().roomManager.fetchAllRooms { rooms, error in}
+
+## Join Public Chat
+TIOChat.shareSDK().conversationManager.joinPublicRoom(#Id Public Chat) { err in }
+# Enter private chat session
+# Note: When executing this method, the conversation in the external chat list will not be marked with the number of unread messages.
+TIOChat.shareSDK().conversationManager.enterConversation(with: #TIOSession, uid: #UserId) { err, recentSession in }
+
+## Load history chat
+## param startMsgId, endMsgId use for load more messages
+TIOChat.shareSDK().conversationManager.fetchMessagesHistory(session: #TIOSession, startMsgId: nil, endMsgId: nil) { err, messages in }
+
+## Check Info PublicChat
+## Get public chatId: session.toUId
+TIOChat.shareSDK().roomManager.fetchRoomInfo(withRoomId: #PuclicChatId) { room, member, err in }
+
+# Check Session Info
+TIOChat.shareSDK().conversationManager.fetchSessionInfo(withSessionId: #SessionId) { err, session in}
+
+# Set Notification Chat
+# 1: On
+# 2: Off
+TIOChat.shareSDK().conversationManager.answerMessageNotification(forRoomid: id, flag: isMute == true ? 1 : 2) { err, data in}
+
+# Get member in PublicChat
+TIOChat.shareSDK().roomManager.fetchMembers(inRoom: #PublicChat Id, searchKey: nil, pageNumber: 1) { users, first, last, total, errr in }
+
+# Clear chat History
+# Use for public chat
+let session = TIOSession(sessionId(), toUId: "", type: .sectionTypePublicChat) 
+TIOChat.shareSDK().conversationManager.clearAllMessages(in: session) { err in}
+
+# Public Chat Admin
+TIORoomMember.role == TIOTeamUserRoleOwner
+
+# Delete Public Chat (use for admin)
+# param: id = roomId
+TIOChat.shareSDK().roomManager.deleteRoom(id) { err in}
+
+# Transfer Public Chat
+TIOChat.shareSDK().roomManager.transferRoom(#Public Chat Id , toUser: #id member in members in public chat) { err in }
+```
+## Example Chat
+```sh
+# Public Chat
+# Send Text
+let message = TIOMessage()
+message.session = session
+message.messageType = .text
+message.text = text
+
+TIOChat.shareSDK().chatManager.send(message) { err in }
+
+## Add delegate
+TIOChat.shareSDK().chatManager.add(self)
+
+## Remove delegate
+TIOChat.shareSDK().chatManager.remove(self)
+
+## Delegate Callback
+    # The message has been sent (not available yet)
+  - func didSend(_ message: TIOMessage, completion error: Error?) {}
+    # Callback when receiving message
+  - func onRecvMessages(_ messages: [TIOMessage]) {}
+    # Friends have read all messages
+  - func didReadedAllMessage() {}
+```
+
+
+
 ## TIOchat Delegation
 **- TIOLoginDelegate**
 ```sh

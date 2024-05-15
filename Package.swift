@@ -10,7 +10,7 @@ let package = Package(
         .library(
             name: "TIOSDKSwift",
             targets: ["TIOSDKSwift"]),
-        .library(name: "TIOSDK", targets: ["TIOSDK"])
+        .library(name: "SDK", targets: ["TIOSDK"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -22,7 +22,7 @@ let package = Package(
         .target(
             name: "TIOSDKSwift"
         ),
-        .target(name: "TIOSDK", dependencies: ["TIOSDK"]),
+        .target(name: "TIOSDK", dependencies: ["TIOSDK"],path: "Sources/SDK"),
         .testTarget(
             name: "TIOSDKSwiftTests",
             dependencies: ["TIOSDKSwift"]),
